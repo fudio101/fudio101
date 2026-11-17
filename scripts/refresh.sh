@@ -31,18 +31,19 @@ urlenc() { printf '%s' "$1" | jq -sRr @uri; }
 fetch_svg() { # url dest
   local tmp
   tmp=$(mktemp)
-  if curl -fsSL --retry 3 --max-time 30 "$1" -o "$tmp" && grep -q '<svg' "$tmp"; then
+  if curl -fsSL --retry 3 --max-time 30 "$1" -o "$tmp" && grep -q '<svg' "$tmp" \
+     && python3 -c 'import sys, xml.dom.minidom; xml.dom.minidom.parse(sys.argv[1])' "$tmp" 2>/dev/null; then
     mv "$tmp" "$2"
     chmod 644 "$2"
     echo "updated $2"
   else
     rm -f "$tmp"
-    echo "kept old $2 (download failed)" >&2
+    echo "kept old $2 (download failed or invalid SVG)" >&2
   fi
 }
 
 CAPSULE="https://capsule-render.vercel.app/api?type=waving&color=0:${NAVY},100:${CYAN}"
-fetch_svg "${CAPSULE}&height=190&section=header&text=$(urlenc 'Adrian Nguyen')&fontSize=50&fontColor=FFFFFF&fontAlignY=36&desc=$(urlenc 'Backend Engineer · Go & TypeScript · Open source')&descSize=18&descAlignY=58&descColor=E0F7FC" assets/header.svg
+fetch_svg "${CAPSULE}&height=190&section=header&text=$(urlenc 'Adrian Nguyen')&fontSize=50&fontColor=FFFFFF&fontAlignY=36&desc=$(urlenc 'Backend Engineer · Go · TypeScript · Open source')&descSize=18&descAlignY=58&descColor=E0F7FC" assets/header.svg
 fetch_svg "${CAPSULE}&height=110&section=footer" assets/footer.svg
 
 LINES=(

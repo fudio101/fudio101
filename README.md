@@ -1,4 +1,4 @@
-<img src="assets/header.svg" width="100%" alt="Adrian Nguyen – Backend Engineer · Go & TypeScript · Open source"/>
+<img src="assets/header.svg" width="100%" alt="Adrian Nguyen – Backend Engineer · Go · TypeScript · Open source"/>
 
 <div align="center">
 
