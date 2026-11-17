@@ -1,0 +1,68 @@
+name: Refresh profile
+
+# Regenerates everything generated on the profile in one job and one commit,
+# so no two jobs ever race to push to main:
+#   - summary cards   (vn7n24fzkq/github-profile-summary-cards)
+#   - contribution snake (Platane/snk)
+#   - header/footer/typing SVGs and the open-source numbers (scripts/refresh.sh)
+
+on:
+  schedule:
+    - cron: "17 17 * * *" # daily, 00:17 in Ho Chi Minh City
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths:
+      - scripts/refresh.sh
+      - .github/workflows/profile.yml
+
+permissions:
+  contents: write
+
+concurrency:
+  group: refresh-profile
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Summary cards
+        uses: vn7n24fzkq/github-profile-summary-cards@release
+        env:
+          # A PAT with read:user in SUMMARY_GITHUB_TOKEN lets the cards count
+          # private contributions; without it the workflow token is used.
+          GITHUB_TOKEN: ${{ secrets.SUMMARY_GITHUB_TOKEN || secrets.GITHUB_TOKEN }}
+        with:
+          USERNAME: ${{ github.repository_owner }}
+          THEME: algolia
+          TIME_ZONE: Asia/Ho_Chi_Minh
+          NAME: Adrian Nguyen
+          AUTO_PUSH: false
+
+      - name: Contribution snake
+        uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            assets/snake/github-snake.svg?palette=github-light&color_snake=#00ADD8
+            assets/snake/github-snake-dark.svg?palette=github-dark&color_snake=#00ADD8
+
+      - name: Header, typing line and open-source numbers
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: bash scripts/refresh.sh
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A README.md assets profile-summary-card-output
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+          else
+            git commit -m "chore: refresh generated profile content"
+            git push
+          fi
