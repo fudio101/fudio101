@@ -100,7 +100,7 @@ with preferred players, and leader-aware auto play-again, all configured from on
 <!-- oss:start -->
 - **[sdm660-mainline/linux](https://github.com/sdm660-mainline/linux/pulls?q=is%3Apr+author%3Afudio101+is%3Amerged)** – mainline Linux for Snapdragon 660 · **2 PRs merged**: Vsmart Active 1 board support, Himax HX83112A panel driver, touchscreen and SMB1351 charger
 - **[postmarketOS/pmaports](https://gitlab.postmarketos.org/postmarketOS/pmaports/-/merge_requests/9720)** – **!9720 merged**: `device-vsmart-zangyapro` and its firmware package, plus a [device wiki page](https://wiki.postmarketos.org/wiki/Vsmart_Active_1_(vsmart-zangyapro))
-- **[Taxuspt/garmin_mcp](https://github.com/Taxuspt/garmin_mcp/pulls?q=is%3Apr+author%3Afudio101)** – MCP server for Garmin Connect · ★ 1.5k · **1 merged**, 1 open
+- **[Taxuspt/garmin_mcp](https://github.com/Taxuspt/garmin_mcp/pulls?q=is%3Apr+author%3Afudio101)** – MCP server for Garmin Connect · ★ 1.6k · **1 merged**, 1 open
 <!-- oss:end -->
 
 ---
